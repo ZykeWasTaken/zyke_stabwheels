@@ -69,7 +69,6 @@ local function MeetsRequirements()
     if (vehicleSpeed > 0.5) then return false end -- Make sure the vehicle is not moving
 
     -- NOTE! That you can not use zyke_gangs functionalities if you do not have the script installed
-    print(zykeGangSettings.enabled)
     if (zykeGangSettings.enabled == true) then -- Make sure you want to use zyke_gangs functionalities
         if (zykeGangSettings.hasToBeInGang) then
             local playerGang = GangFuncs.GetPlayerGang()
