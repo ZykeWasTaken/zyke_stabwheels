@@ -5,18 +5,6 @@ if (Config.Settings.zykeGangs.enabled) then
     GangFuncs = exports["zyke_gangs"]:Fetch()
 end
 
---[[
-    A simple script to allow wheels to get stabbed by a knife
-
-    This script was made to add more ways to sabotage loyalty, as each vehicle sabotaged will result in some loyalty loss for that grid
-    Note that you can disable specific vehicles as well as enable / disable requirements for it to be inside of a grid
-    Sabotaging loyalty will count towards your objectives, so you can use this to complete your objectives
-
-    -- TODO
-    -- Add configuration as stated above
-    -- Make sure I am not in a vehicle
-]]
-
 local closeVehicles = {}
 local closestVehicle = nil
 local closestWheel = nil
