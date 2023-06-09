@@ -138,7 +138,7 @@ local function FetchCloseVehicles()
     for _, vehicle in pairs(pool) do
         local dst = #(plyPos - GetEntityCoords(vehicle))
 
-        if (dst < 25) then
+        if (dst < 100) then
             table.insert(_closeVehicles, vehicle)
         end
     end
