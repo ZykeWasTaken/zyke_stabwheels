@@ -3,7 +3,7 @@ Config = Config or {}
 Config.Settings = {
     zykeGangs = {
         -- When using zyke_gangs (A script that is not yet released), this configuration will allow you to handle grid loyalty upon stabbing wheels, as well as requirements such as being inside someone's grid to stab
-        enabled = true,
+        enabled = false,
         hasToBeInGang = true,
         hasToBeInGrid = true,
     },
