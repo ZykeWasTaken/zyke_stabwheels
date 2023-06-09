@@ -258,11 +258,13 @@ CreateThread(function()
 end)
 
 -- Don't touch, this is used to fetch a valid token to authorize requests sent to zyke_gangs' server side
-function GetToken()
-    local p = promise.new()
-    z.Callback("zyke_gangs:GetToken", function(res)
-        p:resolve(res)
-    end)
+if (Config.Settings.zykeGangs.enabled) then
+    function GetToken()
+        local p = promise.new()
+        z.Callback("zyke_gangs:GetToken", function(res)
+            p:resolve(res)
+        end)
 
-    return Citizen.Await(p)
+        return Citizen.Await(p)
+    end
 end
