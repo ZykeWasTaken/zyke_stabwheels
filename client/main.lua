@@ -179,7 +179,7 @@ local function StabWheel()
 
     closestWheel.bursted = true
     z.Notify(Config.Strings.wheelBursted.msg, Config.Strings.wheelBursted.type)
-    SetVehicleTyreBurst(closestVehicle.vehicle, closestWheel.index, true, 1000)
+    SetVehicleTyreBurst(closestVehicle.vehicle, closestWheel.index, false, 100.0)
 
     Wait(750)
     ClearPedTasks(ply)
