@@ -164,7 +164,7 @@ local function HandleLoyaltyRemoval()
     if (not AreAllWheelsIntact()) then return end -- Make sure all wheels are intact, meaning you can only vandalize cars in "perfect" condition
 
     z.Notify(Config.Strings.vandalizedCar.msg, Config.Strings.vandalizedCar.type)
-    TriggerServerEvent("zyke_gangs:HandleWheelStab", GetToken(), plyPos) -- This is just for loyalty removal, which is handled inside of zyke_gangs
+    TriggerServerEvent("zyke_gangs:HandleWheelStab", GetToken(), plyPos, Config.Settings.zykeGangs.objectiveProgression) -- This is just for loyalty removal and objective progression, which is handled inside of zyke_gangs
 end
 
 -- Handle the stabbing of the wheel and the animation

@@ -6,6 +6,7 @@ Config.Settings = {
         enabled = false,
         hasToBeInGang = true,
         hasToBeInGrid = true,
+        objectiveProgression = true, -- If enabled, the player will gain objective progression upon stabbing a wheel, all values are configurable in the zyke_gangs configuration
     },
     weapons = {
         ["weapon_dagger"] = true,
