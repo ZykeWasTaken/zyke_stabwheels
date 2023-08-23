@@ -174,6 +174,7 @@ local function StabWheel()
 
     local ply = PlayerPedId()
 
+    z.LoadAnim("melee@knife@streamed_core_fps")
     z.PlayAnim(ply, "melee@knife@streamed_core_fps", "ground_attack_on_spot", 8.0, -9.0, 1.8, 15, 1.0, 0, 0, 0)
     Wait(550)
 
