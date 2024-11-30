@@ -1,17 +1,15 @@
 fx_version "cerulean"
 game "gta5"
-author "Zyke#0001"
+author "discord.gg/zykeresources"
 lua54 "yes"
 version "1.0.2"
 
-client_scripts {
-    "client/main.lua",
-}
-
 shared_scripts {
-    "shared/config.lua",
+    "@zyke_lib/imports.lua",
+    "config.lua",
 }
 
-dependencies {
-    "zyke_lib"
-}
+client_script "client.lua"
+file "locales/*.lua"
+
+dependency "zyke_lib"

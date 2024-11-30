@@ -1,13 +1,6 @@
 Config = Config or {}
 
 Config.Settings = {
-    zykeGangs = {
-        -- When using zyke_gangs (A script that is not yet released), this configuration will allow you to handle grid loyalty upon stabbing wheels, as well as requirements such as being inside someone's grid to stab
-        enabled = false,
-        hasToBeInGang = true,
-        hasToBeInGrid = true,
-        objectiveProgression = true, -- If enabled, the player will gain objective progression upon stabbing a wheel, all values are configurable in the zyke_gangs configuration
-    },
     weapons = {
         ["weapon_dagger"] = true,
         ["weapon_bottle"] = true,
@@ -44,13 +37,4 @@ Config.Settings = {
         "crusader",
         "rhino",
     }
-}
-
-Config.Strings = {
-    -- Misc
-    ["stabWheel"] = "~g~[E] ~w~Stab wheel",
-
-    -- Notifications
-    ["vandalizedCar"] = {msg = "You vandalized a car, the grid lost some loyalty.", type = "primary"},
-    ["wheelBursted"] = {msg = "You slashed the vehicle tire.", type = "error"},
 }

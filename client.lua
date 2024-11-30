@@ -1,10 +1,3 @@
-z = exports["zyke_lib"]:Fetch()
-
--- This is just to fetch the zyke_gangs functionalities, will only fetch if you have this setting enabled
-if (Config.Settings.zykeGangs.enabled) then
-    GangFuncs = exports["zyke_gangs"]:Fetch()
-end
-
 local closeVehicles = {}
 local closestVehicle = nil
 local closestWheel = nil
@@ -55,9 +48,7 @@ local isHoldingSlashWeapon = false
 local minDst = 1
 local meetsRequirements = false
 local function MeetsRequirements()
-    local zykeGangSettings = Config.Settings.zykeGangs
     local ply = PlayerPedId()
-    local plyPos = GetEntityCoords(ply)
 
     if (closestVehicle?.isBlacklisted) then return false end -- Make sure the vehicle is not blacklisted
     if (not isHoldingSlashWeapon) then return false end -- Is player holding the correct weapon?
@@ -67,21 +58,6 @@ local function MeetsRequirements()
 
     local vehicleSpeed = GetEntitySpeed(closestVehicle?.vehicle) or 0
     if (vehicleSpeed > 0.5) then return false end -- Make sure the vehicle is not moving
-
-    -- NOTE! That you can not use zyke_gangs functionalities if you do not have the script installed
-    if (zykeGangSettings.enabled == true) then -- Make sure you want to use zyke_gangs functionalities
-        if (zykeGangSettings.hasToBeInGang) then
-            local playerGang = GangFuncs.GetPlayerGang()
-
-            if (not playerGang) then return false end -- Make sure the player is in a gang
-        end
-
-        if (zykeGangSettings.hasToBeInGrid) then
-            local grid = GangFuncs.GetGridData(plyPos)
-
-            if (grid.id == "empty") then return false end -- Make sure the player is in a marked grid
-        end
-    end
 
     return true
 end
@@ -154,19 +130,6 @@ local function FetchClosestVehicle()
     return _closestVehicle
 end
 
--- Function to handle loyalty removal, this will only be triggered if you have zyke_gangs enabled
-local function HandleLoyaltyRemoval()
-    if (Config.Settings.zykeGangs.enabled == false) then return end -- Make sure you have zyke_gangs enabled
-
-    local ply = PlayerPedId()
-    local plyPos = GetEntityCoords(ply)
-
-    if (not AreAllWheelsIntact()) then return end -- Make sure all wheels are intact, meaning you can only vandalize cars in "perfect" condition
-
-    z.Notify(Config.Strings.vandalizedCar.msg, Config.Strings.vandalizedCar.type)
-    TriggerServerEvent("zyke_gangs:HandleWheelStab", GetToken(), plyPos, Config.Settings.zykeGangs.objectiveProgression) -- This is just for loyalty removal and objective progression, which is handled inside of zyke_gangs
-end
-
 -- Handle the stabbing of the wheel and the animation
 local function StabWheel()
     if (closestVehicle?.vehicle == nil) then return end
@@ -174,18 +137,18 @@ local function StabWheel()
 
     local ply = PlayerPedId()
 
-    z.LoadAnim("melee@knife@streamed_core_fps")
-    z.PlayAnim(ply, "melee@knife@streamed_core_fps", "ground_attack_on_spot", 8.0, -9.0, 1.8, 15, 1.0, 0, 0, 0)
+    local dict, anim = "melee@knife@streamed_core_fps", "ground_attack_on_spot"
+    if (not Z.loadDict(dict)) then return end
+
+    TaskPlayAnim(ply, dict, anim, 8.0, -9.0, 1.8, 15, 1.0, 0, 0, 0)
     Wait(550)
 
     closestWheel.bursted = true
-    z.Notify(Config.Strings.wheelBursted.msg, Config.Strings.wheelBursted.type)
+    Z.notify("wheelBursted")
     SetVehicleTyreBurst(closestVehicle.vehicle, closestWheel.index, false, 100.0)
 
     Wait(750)
     ClearPedTasks(ply)
-
-    HandleLoyaltyRemoval()
 end
 
 timers = {
@@ -237,6 +200,8 @@ local function HandleTimers()
 end
 
 CreateThread(function()
+    local stabStr = T("stabWheel")
+
     while true do
         local sleep = 250
 
@@ -246,7 +211,7 @@ CreateThread(function()
             sleep = 3
 
             if (closestWheel) then
-                z.Draw3DText(closestWheel.pos, Config.Strings.stabWheel, 0.3)
+                Z.draw3dText(closestWheel.pos, stabStr, 0.3)
 
                 if (IsControlJustReleased(0, 38)) then
                     StabWheel()
@@ -257,15 +222,3 @@ CreateThread(function()
         Wait(sleep)
     end
 end)
-
--- Don't touch, this is used to fetch a valid token to authorize requests sent to zyke_gangs' server side
-if (Config.Settings.zykeGangs.enabled) then
-    function GetToken()
-        local p = promise.new()
-        z.Callback("zyke_gangs:GetToken", function(res)
-            p:resolve(res)
-        end)
-
-        return Citizen.Await(p)
-    end
-end
